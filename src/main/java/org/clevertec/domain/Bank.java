@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Bank {
-    private int bankId;
+    private Integer bankId;
     private String name;
 }
