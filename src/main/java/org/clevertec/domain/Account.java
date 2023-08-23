@@ -13,5 +13,6 @@ public class Account {
     private Integer userId;
     private String number;
     private Date creationDate;
-    private Integer balance;
+    private Double balance;
+    private Integer currencyId;
 }

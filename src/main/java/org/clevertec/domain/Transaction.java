@@ -16,8 +16,6 @@ public class Transaction {
 
     private Date date;
 
-    private Integer sum;
-
-    private Integer currencyId;
+    private Double sum;
 }
 
