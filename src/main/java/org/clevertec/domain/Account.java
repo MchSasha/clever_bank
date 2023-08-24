@@ -9,10 +9,16 @@ import java.sql.Date;
 @AllArgsConstructor
 public class Account {
     private Integer accountId;
+
     private Integer bankId;
+
     private Integer userId;
+
     private String number;
+
     private Date creationDate;
+
     private Double balance;
+
     private Integer currencyId;
 }
