@@ -21,4 +21,8 @@ public interface AccountService {
 
     int getAllWithdrawal(String accountNumber, Date from, Date to);
 
+    int getAccountId(String accountNumber);
 }
+/*
+acc id????
+* */
