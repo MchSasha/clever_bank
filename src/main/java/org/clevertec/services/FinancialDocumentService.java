@@ -1,9 +1,7 @@
 package org.clevertec.services;
 
-import org.clevertec.domain.AbstractFinancialDocument;
-
 public interface FinancialDocumentService {
-    String savePDF(AbstractFinancialDocument document, String path);
+    String savePDF(String financialDocument, String path);
 
-    String saveTXT(AbstractFinancialDocument document, String path);
+    String saveTXT(String financialDocument, String path);
 }
