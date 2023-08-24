@@ -1,5 +1,12 @@
 package org.clevertec.domain;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = false)
 public class AbstractStatement extends AbstractFinancialDocument{
     public static final String STATEMENT_HEADER_FORM = """
                                                  Выписка                     \s
