@@ -1,5 +1,7 @@
 package org.clevertec.services;
 
+import org.clevertec.domain.Transaction;
+
 public interface BankService {
     String withdrawMoney();
 
@@ -11,6 +13,7 @@ public interface BankService {
 
     String getMoneyStatement();
 
+    Transaction initiateTransaction(String accountNumber, Double sum);
 
 }
 /*
