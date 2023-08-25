@@ -1,19 +1,19 @@
 package org.clevertec.services;
 
-import org.clevertec.domain.AbstractStatement;
-import org.clevertec.domain.Check;
-
 public interface BankService {
-    Check withdrawMoney();
+    String withdrawMoney();
 
-    Check putMoney();
+    String putMoney();
 
-    Check transferMoney();
+    String transferMoney();
 
-    AbstractStatement getTransactionStatement();
+    String getTransactionStatement();
 
-    AbstractStatement getMoneyStatement();
+    String getMoneyStatement();
+
+
 }
 /*
 check absSt or absFinDoc ????
+для работы сервиса приложения меняю FinancialDocument'ы на Стринги
 * */
