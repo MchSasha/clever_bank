@@ -16,14 +16,23 @@ public class AccountDAOImpl implements AccountDAO{
             "WHERE Number = ?;";
 
     public static final String SQL_COUNT_TOTAL_INCOME =
-            "SELECT (SELECT sum(Sum) " +
+            "SELECT (SELECT COALESCE(SUM(Sum),0) " +
                     "FROM Transactions " +
                     "WHERE RecipientAccountId = ? AND SenderAccountId <> ? and Date BETWEEN ? AND ?)" +
                     " + " +
-                    "(SELECT sum(Sum)" +
+                    "(SELECT COALESCE(SUM(Sum),0)" +
                     "FROM Transactions " +
                     "WHERE SenderAccountId = ? AND RecipientAccountId IS NULL AND Sum > 0 and Date BETWEEN ? AND ?) " +
             "AS TotalIncome;";
+
+    public static final String SQL_COUNT_TOTAL_WITHDRAWAL =
+            "SELECT -1 * (SELECT COALESCE(SUM(Sum),0) " +
+                    "FROM Transactions " +
+                    "WHERE RecipientAccountId <> ? and SenderAccountId = ? AND Date BETWEEN ? AND ?) +  " +
+                    "(SELECT COALESCE(SUM(Sum),0) " +
+                    "FROM Transactions " +
+                    "WHERE SenderAccountId = ? AND RecipientAccountId IS NULL AND Sum < 0  AND Date BETWEEN ? AND ?) " +
+            "AS TotalWithdrawal;";
 
 
     @Override
@@ -93,7 +102,27 @@ public class AccountDAOImpl implements AccountDAO{
     }
 
     @Override
-    public int getTotalWithdrawal(String accountNumber, Date from, Date to) {
+    public int getTotalWithdrawal(int accountId, Date from, Date to) {
+        try(Connection connection = DatabaseUtility.getConnection();
+            PreparedStatement statement = connection.prepareStatement(SQL_COUNT_TOTAL_WITHDRAWAL)) {
+
+            statement.setInt(1, accountId);
+            statement.setInt(2, accountId);
+            statement.setDate(3, from);
+            statement.setDate(4, to);
+            statement.setInt(5, accountId);
+            statement.setDate(6, from);
+            statement.setDate(7, to);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("TotalIncome");
+            }
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
         return 0;
     }
 }
