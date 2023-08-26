@@ -34,7 +34,6 @@ public class AccountDAOImpl implements AccountDAO{
                     "WHERE SenderAccountId = ? AND RecipientAccountId IS NULL AND Sum < 0  AND Date BETWEEN ? AND ?) " +
             "AS TotalWithdrawal;";
 
-
     @Override
     public int updateBalance(Integer accountId, double sum) {
         try(Connection connection = DatabaseUtility.getConnection();
@@ -117,7 +116,7 @@ public class AccountDAOImpl implements AccountDAO{
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                return resultSet.getInt("TotalIncome");
+                return resultSet.getInt("TotalWithdrawal");
             }
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
