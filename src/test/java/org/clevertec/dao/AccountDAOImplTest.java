@@ -75,4 +75,21 @@ class AccountDAOImplTest {
 
         assertEquals(1415.00, income);
     }
+
+    @Test
+    void getTotalWithdrawal() {
+        AccountDAO accountDAO = new AccountDAOImpl();
+        int withdrawal;
+        try {
+            withdrawal = accountDAO.getTotalWithdrawal(
+                    6,
+                    Date.valueOf(LocalDate.now().minusDays(2)),
+                    Date.valueOf(LocalDate.now()));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(-2100.00, withdrawal);
+    }
 }
