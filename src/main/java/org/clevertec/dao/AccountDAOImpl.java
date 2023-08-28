@@ -8,7 +8,7 @@ public class AccountDAOImpl implements AccountDAO{
             "UPDATE Accounts " +
             "SET Balance = (" +
             "SELECT Balance WHERE AccountId = ?) + ? " +
-            "WHERE AccountId = ?;";
+            "WHERE AccountId = ? AND Balance > ?;";
 
     public static final String SQL_SELECT_ID =
             "SELECT AccountId " +
@@ -42,6 +42,7 @@ public class AccountDAOImpl implements AccountDAO{
             statement.setInt(1, accountId);
             statement.setDouble(2, sum);
             statement.setInt(3, accountId);
+            statement.setDouble(4, sum);
 
             return statement.executeUpdate();
 
