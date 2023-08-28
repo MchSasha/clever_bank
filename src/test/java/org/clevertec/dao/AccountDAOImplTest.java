@@ -33,6 +33,18 @@ class AccountDAOImplTest {
 
         assertEquals(0, affRows);
     }
+    @Test
+    void updateBalanceUnsuccessfulInsufficientSum() {
+        AccountDAO accountDAO = new AccountDAOImpl();
+        int affRows;
+        try {
+            affRows = accountDAO.updateBalance(4, 1000000);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(0, affRows);
+    }
 
     @Test
     void getAccountId() {
