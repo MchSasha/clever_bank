@@ -16,9 +16,9 @@ public class AccountDAOImpl implements AccountDAO{
             "WHERE Number = ?;";
 
     public static final String SQL_COUNT_TOTAL_INCOME =
-            "SELECT (SELECT COALESCE(SUM(Sum),0) " +
+            "SELECT -1 * (SELECT COALESCE(SUM(Sum),0) " +
                     "FROM Transactions " +
-                    "WHERE RecipientAccountId = ? AND SenderAccountId <> ? and Date BETWEEN ? AND ?)" +
+                    "WHERE RecipientAccountId = ? AND SenderAccountId <> ? AND Sum < 0 AND Date BETWEEN ? AND ?)" +
                     " + " +
                     "(SELECT COALESCE(SUM(Sum),0)" +
                     "FROM Transactions " +
@@ -26,9 +26,9 @@ public class AccountDAOImpl implements AccountDAO{
             "AS TotalIncome;";
 
     public static final String SQL_COUNT_TOTAL_WITHDRAWAL =
-            "SELECT -1 * (SELECT COALESCE(SUM(Sum),0) " +
+            "SELECT (SELECT COALESCE(SUM(Sum),0) " +
                     "FROM Transactions " +
-                    "WHERE RecipientAccountId <> ? and SenderAccountId = ? AND Date BETWEEN ? AND ?) +  " +
+                    "WHERE RecipientAccountId <> ? and SenderAccountId = ? AND Sum < 0 AND Date BETWEEN ? AND ?) +  " +
                     "(SELECT COALESCE(SUM(Sum),0) " +
                     "FROM Transactions " +
                     "WHERE SenderAccountId = ? AND RecipientAccountId IS NULL AND Sum < 0  AND Date BETWEEN ? AND ?) " +
