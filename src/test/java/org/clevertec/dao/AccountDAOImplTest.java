@@ -104,4 +104,40 @@ class AccountDAOImplTest {
 
         assertEquals(-2300.00, withdrawal);
     }
+
+    @Test
+    void transferMoney() {
+        AccountDAO accountDAO = new AccountDAOImpl();
+        int transfer;
+        try {
+            transfer = accountDAO.transferMoney(
+                    5,
+                    6,
+                    900
+            );
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(1, transfer);
+
+    }
+    @Test
+    void transferMoneyInsufficientSum() {
+        AccountDAO accountDAO = new AccountDAOImpl();
+        int transfer;
+        try {
+            transfer = accountDAO.transferMoney(
+                    5,
+                    6,
+                    9000000
+            );
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(0, transfer);
+    }
 }
