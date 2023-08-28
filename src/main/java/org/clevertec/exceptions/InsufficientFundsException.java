@@ -1,4 +1,4 @@
-package org.clevertec.services;
+package org.clevertec.exceptions;
 
 import lombok.experimental.StandardException;
 
