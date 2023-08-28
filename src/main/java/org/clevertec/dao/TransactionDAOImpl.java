@@ -15,7 +15,7 @@ public class TransactionDAOImpl implements TransactionDAO{
             "VALUES (?, ?, NOW(), ?);";
 
     @Override
-    public void saveTransaction(Transaction transaction) {
+    public int saveTransaction(Transaction transaction) {
         try(Connection connection = DatabaseUtility.getConnection();
             PreparedStatement statement = connection.prepareStatement(SQL_INSERT_TRANSACTION)) {
 
@@ -23,7 +23,7 @@ public class TransactionDAOImpl implements TransactionDAO{
             statement.setInt(2, transaction.getRecipientAccountId());
             statement.setDouble(3, transaction.getSum());
 
-            statement.executeUpdate();                      //??
+            return statement.executeUpdate();
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -39,3 +39,5 @@ public class TransactionDAOImpl implements TransactionDAO{
         return null;
     }
 }
+
+// искл
