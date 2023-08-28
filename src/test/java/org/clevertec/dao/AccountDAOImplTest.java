@@ -65,15 +65,15 @@ class AccountDAOImplTest {
         int income;
         try {
             income = accountDAO.getTotalIncome(
-                    6,
-                    Date.valueOf(LocalDate.now().minusDays(2)),
+                    5,
+                    Date.valueOf(LocalDate.now().minusDays(15)),
                     Date.valueOf(LocalDate.now()));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        assertEquals(1415.00, income);
+        assertEquals(300.00, income);
     }
 
     @Test
@@ -83,13 +83,13 @@ class AccountDAOImplTest {
         try {
             withdrawal = accountDAO.getTotalWithdrawal(
                     6,
-                    Date.valueOf(LocalDate.now().minusDays(2)),
+                    Date.valueOf(LocalDate.now().minusDays(15)),
                     Date.valueOf(LocalDate.now()));
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        assertEquals(-2100.00, withdrawal);
+        assertEquals(-2300.00, withdrawal);
     }
 }
