@@ -6,9 +6,10 @@ import java.sql.*;
 public class AccountDAOImpl implements AccountDAO{
     public static final String SQL_UPDATE_BALANCE =
             "UPDATE Accounts " +
-            "SET Balance = (" +
-            "SELECT Balance WHERE AccountId = ?) + ? " +
-            "WHERE AccountId = ? AND Balance > ?;";
+            "SET Balance = Balance + ? " +
+            "WHERE AccountId = ?";
+
+    public static final String SQL_ADD_BALANCE_CONDITION = " AND Balance > ?";
 
     public static final String SQL_SELECT_ID =
             "SELECT AccountId " +
@@ -36,16 +37,18 @@ public class AccountDAOImpl implements AccountDAO{
 
     @Override
     public int updateBalance(Integer accountId, double sum) {
+        StringBuilder query = new StringBuilder(SQL_UPDATE_BALANCE);
+        if (sum < 0) {
+            query.append(SQL_ADD_BALANCE_CONDITION);
+        }
 
         try(Connection connection = DatabaseUtility.getConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_BALANCE)) {
+            PreparedStatement statement = connection.prepareStatement(query.toString())) {
 
-            statement.setInt(1, accountId);
-            statement.setDouble(2, sum);
-            statement.setInt(3, accountId);
+            statement.setDouble(1, sum);
+            statement.setInt(2, accountId);
             if(sum < 0)
-                statement.setDouble(4, Math.abs(sum));
-            else statement.setDouble(4, Double.NEGATIVE_INFINITY);
+                statement.setDouble(3, Math.abs(sum));
 
             return statement.executeUpdate();
 
@@ -55,8 +58,35 @@ public class AccountDAOImpl implements AccountDAO{
     }
 
     @Override
-    public void transferMoney(String senderAccountNumber, String recipientAccountNumber, double sum) {
+    public int transferMoney(int senderAccountId, int recipientAccountId, double sum) {
+        try(Connection connection = DatabaseUtility.getConnection()) {
+            connection.setAutoCommit(false);
+            try(PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_BALANCE + SQL_ADD_BALANCE_CONDITION)) {
+                if (senderAccountUpdateTry(senderAccountId, sum, statement) == 0) {
+                    return 0;
+                }
+            } catch (SQLException e){
+                connection.setAutoCommit(true);
+            }
 
+            try(PreparedStatement statement1 = connection.prepareStatement(SQL_UPDATE_BALANCE);
+                PreparedStatement statement2 = connection.prepareStatement(TransactionDAOImpl.SQL_INSERT_TRANSACTION)) {
+                prepareSenderAccountAndTransactionUpdates(senderAccountId, recipientAccountId, sum, statement1, statement2);
+
+                statement1.executeUpdate();
+                statement2.executeUpdate();
+
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw new RuntimeException(e);
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        return 1;
     }
 
     @Override
@@ -128,6 +158,23 @@ public class AccountDAOImpl implements AccountDAO{
 
         return 0;
     }
+
+    private void prepareSenderAccountAndTransactionUpdates(int senderAccountId, int recipientAccountId, double sum, PreparedStatement statement1, PreparedStatement statement2) throws SQLException {
+        statement1.setDouble(1, sum);
+        statement1.setInt(2, recipientAccountId);
+
+        statement2.setInt(1, senderAccountId);
+        statement2.setInt(2, recipientAccountId);
+        statement2.setDouble(3, -sum);
+    }
+
+    private int senderAccountUpdateTry(int senderAccountId, double sum, PreparedStatement statement) throws SQLException {
+        statement.setDouble(1, -sum);
+        statement.setInt(2, senderAccountId);
+        statement.setDouble(3, Math.abs(sum));
+
+        return statement.executeUpdate();
+    }
 }
 
 //в updateBal меняю на аккаунтид
@@ -136,3 +183,6 @@ public class AccountDAOImpl implements AccountDAO{
 //анчекд искл в получить ай ди
 
 // нужен ли трансфер если можно реализовать через сохранениеТранзакции и 2 обновленияБаланса
+
+
+
