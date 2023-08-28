@@ -4,10 +4,8 @@ import org.clevertec.domain.Transaction;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
 public class TransactionDAOImpl implements TransactionDAO{
     public static final String SQL_INSERT_TRANSACTION =
@@ -29,15 +27,6 @@ public class TransactionDAOImpl implements TransactionDAO{
         }
     }
 
-    @Override
-    public List<Transaction> getInitiatedTransactions(String accountNumber, Date from, Date to) {
-        return null;
-    }
-
-    @Override
-    public List<Transaction> getNotInitiatedTransactions(String accountNumber, Date from, Date to) {
-        return null;
-    }
 }
 
 // искл
