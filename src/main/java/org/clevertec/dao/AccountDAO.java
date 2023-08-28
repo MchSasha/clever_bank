@@ -9,9 +9,9 @@ public interface AccountDAO {
 
     int getAccountId(String accountNumber);
 
-    int getTotalIncome(int accountId, Date from, Date to);
+    double getTotalIncome(int accountId, Date from, Date to);
 
-    int getTotalWithdrawal(int accountId, Date from, Date to);
+    double getTotalWithdrawal(int accountId, Date from, Date to);
 }
 
 /*
