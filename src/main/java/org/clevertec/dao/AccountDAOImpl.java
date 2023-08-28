@@ -110,7 +110,7 @@ public class AccountDAOImpl implements AccountDAO{
 
 
     @Override
-    public int getTotalIncome(int accountId, Date from, Date to) {
+    public double getTotalIncome(int accountId, Date from, Date to) {
         try(Connection connection = DatabaseUtility.getConnection();
             PreparedStatement statement = connection.prepareStatement(SQL_COUNT_TOTAL_INCOME)) {
 
@@ -125,7 +125,7 @@ public class AccountDAOImpl implements AccountDAO{
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                return resultSet.getInt("TotalIncome");
+                return resultSet.getDouble("TotalIncome");
             }
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
@@ -135,7 +135,7 @@ public class AccountDAOImpl implements AccountDAO{
     }
 
     @Override
-    public int getTotalWithdrawal(int accountId, Date from, Date to) {
+    public double getTotalWithdrawal(int accountId, Date from, Date to) {
         try(Connection connection = DatabaseUtility.getConnection();
             PreparedStatement statement = connection.prepareStatement(SQL_COUNT_TOTAL_WITHDRAWAL)) {
 
@@ -150,7 +150,7 @@ public class AccountDAOImpl implements AccountDAO{
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                return resultSet.getInt("TotalWithdrawal");
+                return resultSet.getDouble("TotalWithdrawal");
             }
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
