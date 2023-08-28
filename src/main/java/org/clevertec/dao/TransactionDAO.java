@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.util.List;
 
 public interface TransactionDAO {
-    void saveTransaction(Transaction transaction);
+    int saveTransaction(Transaction transaction);
 
     List<Transaction> getInitiatedTransactions(String accountNumber, Date from, Date to);
 
