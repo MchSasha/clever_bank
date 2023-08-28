@@ -38,7 +38,7 @@ class AccountDAOImplTest {
         AccountDAO accountDAO = new AccountDAOImpl();
         int affRows;
         try {
-            affRows = accountDAO.updateBalance(4, 1000000);
+            affRows = accountDAO.updateBalance(4, -1000000);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
