@@ -34,6 +34,15 @@ class AccountServiceImplTest {
 
     @Test
     void putMoney() {
+        Transaction transaction = new AccountServiceImpl().putMoney("MN1234567890123456789012AAAA", 200000);
+
+        assertEquals(new Transaction(null,7, null, Date.valueOf(LocalDate.now()), 200000.0), transaction);
+    }
+    @Test
+    void putMoneyWithNoSuchAccount() {
+        assertThrows(AccountNotFoundException.class, () -> {
+            Transaction transaction = new AccountServiceImpl().putMoney("MN1234567893456789012AAAA", 8);
+        });
     }
 
     @Test
