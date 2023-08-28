@@ -36,13 +36,16 @@ public class AccountDAOImpl implements AccountDAO{
 
     @Override
     public int updateBalance(Integer accountId, double sum) {
+
         try(Connection connection = DatabaseUtility.getConnection();
             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_BALANCE)) {
 
             statement.setInt(1, accountId);
             statement.setDouble(2, sum);
             statement.setInt(3, accountId);
-            statement.setDouble(4, sum);
+            if(sum < 0)
+                statement.setDouble(4, Math.abs(sum));
+            else statement.setDouble(4, Double.NEGATIVE_INFINITY);
 
             return statement.executeUpdate();
 
