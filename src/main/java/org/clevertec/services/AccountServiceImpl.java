@@ -19,7 +19,7 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public Transaction withdrawMoney(String accountNumber, double sum) throws AccountNotFoundException, InsufficientFundsException {         //int?                //7 acc test
-        int accountId = accountDAO.getAccountId(accountNumber);                 // -1 -- no such account   //вынести и кидать нет акка, потому что ели он есть и нет вставки, то нет денег
+        int accountId = accountDAO.getAccountId(accountNumber);                 // -1 -- no such account //вынести и кидать нет акка, потому что ели он есть и нет вставки, то нет денег
         if(accountId == -1) throw new AccountNotFoundException("Account with number " + accountNumber + " not found");
 
         Transaction transaction = new Transaction(accountId, Date.valueOf(LocalDate.now()), -sum);
@@ -33,8 +33,16 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public Transaction putMoney(String accountNumber, Integer sum) {
-        return null;
+    public Transaction putMoney(String accountNumber, double sum) {
+        int accountId = accountDAO.getAccountId(accountNumber);                 // -1 -- no such account //вынести и кидать нет акка, потому что ели он есть и нет вставки, то нет денег
+        if(accountId == -1) throw new AccountNotFoundException("Account with number " + accountNumber + " not found");
+
+        Transaction transaction = new Transaction(accountId, Date.valueOf(LocalDate.now()), sum);
+
+        accountDAO.updateBalance(accountId, sum);
+        transactionDAO.saveTransaction(transaction);
+
+        return transaction;
     }
 
     @Override
@@ -67,3 +75,8 @@ public class AccountServiceImpl implements AccountService{
         return 0;
     }
 }
+
+//еще метод для снять/положить
+//вынести получение ид
+//защита при операциях с бд подряд
+
