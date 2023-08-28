@@ -24,5 +24,13 @@ public class Transaction {
         this.date = date;
         this.sum = sum;
     }
+
+    public Transaction(Integer senderAccountId, Date date, Double sum) {            //?????????
+        this.senderAccountId = senderAccountId;
+        this.date = date;
+        this.sum = sum;
+    }
+
+
 }
 
