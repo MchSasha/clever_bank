@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.util.List;
 
 public interface AccountService {
-    Transaction withdrawMoney(String accountNumber, Integer sum);
+    Transaction withdrawMoney(String accountNumber, double sum);
 
     Transaction putMoney(String accountNumber, Integer sum);
 
