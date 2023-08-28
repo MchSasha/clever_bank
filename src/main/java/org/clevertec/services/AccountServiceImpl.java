@@ -7,6 +7,7 @@ import org.clevertec.dao.TransactionDAOImpl;
 import org.clevertec.domain.Account;
 import org.clevertec.domain.Transaction;
 import org.clevertec.exceptions.AccountNotFoundException;
+import org.clevertec.exceptions.InsufficientFundsException;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -61,19 +62,20 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public int getAllIncome(String accountNumber, Date from, Date to) {
-        return 0;
+    public double getTotalIncome(String accountNumber, Date from, Date to) {
+        return accountDAO.getTotalIncome(getAccountId(accountNumber), from, to);
     }
 
     @Override
-    public int getAllWithdrawal(String accountNumber, Date from, Date to) {
-        return 0;
+    public double getTotalWithdrawal(String accountNumber, Date from, Date to) {
+        return accountDAO.getTotalWithdrawal(getAccountId(accountNumber), from, to);
     }
 
     @Override
     public int getAccountId(String accountNumber) {
-        return 0;
+        return accountDAO.getAccountId(accountNumber);
     }
+
 }
 
 //еще метод для снять/положить
