@@ -74,7 +74,7 @@ class AccountDAOImplTest {
     @Test
     void getTotalIncome() {
         AccountDAO accountDAO = new AccountDAOImpl();
-        int income;
+        double income;
         try {
             income = accountDAO.getTotalIncome(
                     5,
@@ -91,7 +91,7 @@ class AccountDAOImplTest {
     @Test
     void getTotalWithdrawal() {
         AccountDAO accountDAO = new AccountDAOImpl();
-        int withdrawal;
+        double withdrawal;
         try {
             withdrawal = accountDAO.getTotalWithdrawal(
                     6,
